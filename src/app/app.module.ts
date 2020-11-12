@@ -9,7 +9,7 @@ import { routing } from './app.routes';
 import { AppComponent } from './app.component';
 import { AuthService } from './core/auth.service';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryTodoDbService } from './todo/todo-data';
+// import { InMemoryTodoDbService } from './todo/todo-data';
 
 // 组件/页面
 import { LoginComponent } from './login/login.component';
@@ -32,7 +32,7 @@ import { TodoComponent } from './todo/todo.component';
     HttpModule,
     // 路由
     routing,
-    InMemoryWebApiModule.forRoot(InMemoryTodoDbService),
+    // InMemoryWebApiModule.forRoot(InMemoryTodoDbService),
   ],
   providers: [
     {provide: 'auth', useClass: AuthService}

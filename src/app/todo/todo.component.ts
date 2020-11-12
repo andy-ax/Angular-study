@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoService } from './todo.service';
-import { TODO } from './todo.model';
+import { TodoService } from './ut/todo.service';
+import { TODO } from './ut/todo.model';
 
 @Component({
   selector: 'app-todo',
@@ -19,9 +19,7 @@ export class TodoComponent implements OnInit {
   }
 
   addTodo () {
-    this.service.addTodo(this.desc).then(todos=>{
-      debugger;
-    });
+    this.todos = this.service.addTodo(this.desc);
     this.desc = '';
   }
 

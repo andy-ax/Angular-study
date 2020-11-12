@@ -16,14 +16,8 @@ export class TodoService {
 
   addTodo(todoItem: string) {
     const todo = new TODO(UUID.UUID(), todoItem, false);
-    return this.http
-            .post(this.api_url, JSON.stringify(todo), {headers: this.headers})
-            .toPromise()
-            .then(res => {
-              debugger;
-              res.json().data as TODO;
-            })
-            .catch(this.handleError);
+    this.todos.push(todo);
+    return this.todos;
   }
 
   private handleError(error: any): Promise<any> {
