@@ -1,21 +1,28 @@
-import { Injectable } from '@angular/core';
-import {Http, Headers} from '@angular/http';
-import { TODO } from './todo.model';
-import { UUID } from 'angular2-uuid';
-
+import {Injectable} from '@angular/core';
+import {Headers} from '@angular/http';
+import {HttpClient} from '@angular/common/http';
+import {UUID} from 'angular2-uuid';
 import 'rxjs/add/operator/toPromise';
+import {Todo} from './todo.model';
+
 
 @Injectable()
+
 export class TodoService {
 
-  todos: TODO [] = [];
-  private api_url = 'fake_url/todos';
+  todos: Todo [] = [];
+  private api_url = 'api/todos';
   private headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) {
+  }
+
+  getTodo() {
+    return this.http.get(this.api_url);
+  }
 
   addTodo(todoItem: string) {
-    const todo = new TODO(UUID.UUID(), todoItem, false);
+    const todo = new Todo(UUID.UUID(), todoItem, false);
     this.todos.push(todo);
     return this.todos;
   }

@@ -1,4 +1,4 @@
-export class TODO {
+export class Todo {
   public id: number;
   public desc: string;
   public completed: boolean;
