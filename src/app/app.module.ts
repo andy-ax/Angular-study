@@ -10,12 +10,13 @@ import { AppComponent } from './app.component';
 import { AuthService } from './core/auth.service';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryTodoDbService } from './todo/ut/todo-data';
+import { Http } from './fakeHttp/fakeHttp';
 
 // 组件/页面
 import { LoginComponent } from './login/login.component';
 import { TodoComponent } from './todo/todo.component';
 
-
+Http.forRoot([InMemoryTodoDbService]);
 
 @NgModule({
   declarations: [
@@ -31,15 +32,12 @@ import { TodoComponent } from './todo/todo.component';
     // HTTP请求与响应
     HttpClientModule,
     // 路由
-    routing,
-    // InMemoryWebApiModule.forRoot(InMemoryTodoDbService),
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryTodoDbService, {dataEncapsulation: false}
-    )
+    routing
   ],
   providers: [
     {provide: 'auth', useClass: AuthService},
     HttpClientModule,
+    Http,
   ],
   bootstrap: [AppComponent]
 })

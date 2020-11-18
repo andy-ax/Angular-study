@@ -1,10 +1,11 @@
-export class Todo {
-  public id: number;
-  public desc: string;
-  public completed: boolean;
-  constructor(id, desc, completed) {
-    this.id = id;
-    this.desc = desc;
-    this.completed = completed;
-  }
+interface TodoModel {
+  id: number;
+  desc: string;
+  completed: boolean;
+}
+
+export class Todo implements TodoModel {
+  id: number;
+  desc: string;
+  completed: boolean;
 }

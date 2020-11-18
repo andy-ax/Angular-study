@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Headers} from '@angular/http';
-import {HttpClient} from '@angular/common/http';
-import {UUID} from 'angular2-uuid';
 import 'rxjs/add/operator/toPromise';
 import {Todo} from './todo.model';
+import { Http } from '../../fakeHttp/fakeHttp';
 
 
 @Injectable()
@@ -11,24 +10,24 @@ import {Todo} from './todo.model';
 export class TodoService {
 
   todos: Todo [] = [];
-  private api_url = 'api/todos';
+  private api_url = 'api/';
+  private todo_url = 'todos';
+  private get_id_url = 'todos/';
   private headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(private http: HttpClient) {
+  constructor(private https: Http) {
   }
 
   getTodo() {
-    return this.http.get(this.api_url);
+    return this.https.get(this.api_url+this.todo_url);
   }
 
   addTodo(todoItem: string) {
-    const todo = new Todo(UUID.UUID(), todoItem, false);
-    this.todos.push(todo);
-    return this.todos;
+    const todo: Todo = {id: 6, desc: todoItem, completed: false};
+    return this.https.post(this.api_url+this.todo_url,todo)
   }
 
-  private handleError(error: any): Promise<any> {
-    console.log(error);
-    return Promise.reject(error.message || error);
+  searchById(id) {
+    return this.https.get(this.api_url+this.get_id_url+id);
   }
 }

@@ -17,13 +17,17 @@ export class TodoComponent implements OnInit {
 
   ngOnInit() {
     const self = this;
-    const r = this.service.getTodo().subscribe(data => {
+    const r = this.service.getTodo().then(data => {
       self.todos = data;
     });
   }
 
   addTodo () {
-    this.todos = this.service.addTodo(this.desc);
+    this.service.addTodo(this.desc).then(data=>{
+      if (data) {
+        this.todos = data;
+      }
+    });
     this.desc = '';
   }
 
