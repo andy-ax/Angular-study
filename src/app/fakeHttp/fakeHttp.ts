@@ -80,15 +80,15 @@ export class Http {
     return this.use('get', url, data)
   }
 
-  post (url, data) {
+  post (url, data?) {
     return this.use('post', url, data)
   }
 
-  put (url, data) {
+  put (url, data?) {
     return this.use('put', url, data)
   }
 
-  delete (url, data) {
+  delete (url, data?) {
     return this.use('delete', url, data)
   }
 

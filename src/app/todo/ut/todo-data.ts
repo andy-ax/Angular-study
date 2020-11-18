@@ -16,6 +16,8 @@ export class InMemoryTodoDbService extends Http{
     super.setRoute('api/todos', 'get', this.getTodo.bind(this));
     super.setRoute('api/todos', 'post', this.postTodo.bind(this));
     super.setRoute('api/todos/:id', 'get', this.searchById.bind(this));
+    super.setRoute('api/todos/:id', 'put', this.toggleTodo.bind(this));
+    super.setRoute('api/todos/:id', 'delete', this.deleteTodo.bind(this));
   }
 
   getTodo() {
@@ -35,6 +37,24 @@ export class InMemoryTodoDbService extends Http{
     return new Promise((res)=>{
       const item = this.todos.find(item=>item.id == id);
       res(item);
+    })
+  }
+
+  toggleTodo(data: Todo, id: number|string) {
+    return new Promise((res)=>{
+      const item = this.todos.find(item=>item.id == id);
+      item.desc = data.desc;
+      item.completed = data.completed;
+      res(this.todos);
+    })
+  }
+
+  deleteTodo(data: undefined, id: number|string) {
+    return new Promise((res)=>{
+      const index = this.todos.findIndex(item=>item.id == id);
+      const todos = this.todos;
+      this.todos = todos.slice(0, index).concat(todos.slice(index+1));
+      res(this.todos);
     })
   }
 }
