@@ -20,7 +20,12 @@ export class TodoComponent implements OnInit {
     this.getTodos();
   }
 
-  addTodo () {
+  onTextChanges(value) {
+    this.desc = value;
+  }
+
+  addTodo (desc) {
+    this.desc = desc;
     this.service.addTodo(this.desc).then(data=>{
       if (data) {
         this.todos = data;
@@ -31,6 +36,7 @@ export class TodoComponent implements OnInit {
 
   toggleTodo(todo: Todo) {
     const i = this.todos.indexOf(todo);
+    todo.completed = !todo.completed;
     this.service.toggleTodo(todo).then(data=>{
       this.todos = data;
     })
