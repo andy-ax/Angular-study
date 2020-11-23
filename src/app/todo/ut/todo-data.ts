@@ -1,4 +1,4 @@
-import {Http} from '../../fakeHttp/fakeHttp';
+import {Http} from '../../util/fakeHttp';
 import {Todo} from './todo.model';
 
 export class InMemoryTodoDbService extends Http{

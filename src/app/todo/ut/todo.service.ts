@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Todo} from './todo.model';
-import { Http } from '../../fakeHttp/fakeHttp';
+import { Http } from '../../util/fakeHttp';
 
 
 @Injectable()
