@@ -14,9 +14,7 @@ import { Http } from './fakeHttp/fakeHttp';
 
 // 组件/页面
 import { LoginComponent } from './login/login.component';
-import { TodoComponent } from './todo/todo.component';
-import { TodoFooterComponent } from './todo/todo-footer/todo-footer.component';
-import { TodoHeaderComponent } from './todo/todo-header/todo-header.component';
+import { TodoModule } from './todo/todo.module';
 
 Http.forRoot([InMemoryTodoDbService]);
 
@@ -24,9 +22,6 @@ Http.forRoot([InMemoryTodoDbService]);
   declarations: [
     AppComponent,
     LoginComponent,
-    TodoComponent,
-    TodoFooterComponent,
-    TodoHeaderComponent,
   ],
   imports: [
     // 只要app运行在浏览器就必须引入该模块
@@ -36,7 +31,8 @@ Http.forRoot([InMemoryTodoDbService]);
     // HTTP请求与响应
     HttpClientModule,
     // 路由
-    routing
+    routing,
+    TodoModule
   ],
   providers: [
     {provide: 'auth', useClass: AuthService},
