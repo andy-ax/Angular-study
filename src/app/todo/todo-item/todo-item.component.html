@@ -1,0 +1,8 @@
+<div class="view" [class.completed]="isChecked">
+  <img class="toggle"
+       [src]="'../../assets/img/'+(isChecked?'':'un')+'check.png'"
+       (click)="toggle()"
+  >
+  <label (click)="toggle()">{{todoDesc}}</label>
+  <button class="destroy" (click)="remove(); $event.stopPropagation()"></button>
+</div>
