@@ -48,10 +48,12 @@ export class Http {
 
       let expResult;
 
+      const urlObj = this.splitUrl(url);
+
       const route = typeRoutes.find(route=>{
         const pathExp = route.path;
-        if (pathExp.test(url)) {
-          expResult = pathExp.exec(url);
+        if (pathExp.test(urlObj.url)) {
+          expResult = pathExp.exec(urlObj.url);
           expResult = [].concat(expResult);
           expResult.shift();
           route.path.lastIndex = 0;
@@ -63,7 +65,9 @@ export class Http {
 
       if (cb) {
         if (cb instanceof Function) {
-          cb(data, ...expResult).then((data)=>{
+          let params: any = [data];
+          params.push(urlObj.query || {});
+          cb(...params, ...expResult).then((data)=>{
             res(data);
           })
         } else {
@@ -74,6 +78,32 @@ export class Http {
         console.error.apply(console,['Error',this.response404(url)]);
       }
     });
+  }
+
+  private splitUrl(url: string) {
+    url = url.split('#')[0];
+    const [base, query] = url.split('?');
+    let result: any = {
+      url: base,
+    };
+    if (query.length > 0) {
+      const queryArr = query.split('&');
+      const queryObj: any = {};
+      queryArr.forEach(item=>{
+        const [key, value] = item.split('=');
+        if (queryObj[key]) {
+          if (queryObj[key] instanceof Array) {
+            queryObj[key].push(value);
+          } else {
+            queryObj[key] = [queryObj[key], value];
+          }
+        } else {
+          queryObj[key] = value;
+        }
+      });
+      result.query = queryObj;
+    }
+    return result;
   }
 
   get (url, data?) {

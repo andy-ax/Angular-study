@@ -11,7 +11,7 @@ export const routes: Routes = [
   // 无组件路由
   {
     path: 'todo',
-    redirectTo: 'todo',
+    redirectTo: 'todo/ALL',
   },
   {
     path: 'login',

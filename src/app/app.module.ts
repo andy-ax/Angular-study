@@ -8,7 +8,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { routing } from './app.routes';
 import { AppComponent } from './app.component';
 import { AuthService } from './core/auth.service';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryTodoDbService } from './todo/ut/todo-data';
 import { Http } from './util/fakeHttp';
 
