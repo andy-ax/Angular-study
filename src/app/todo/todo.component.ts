@@ -4,6 +4,7 @@ import { Todo } from '../domain/entities';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Inject } from '@angular/core';
 import {UUID} from 'uuid'
+import {DataAccess} from '../util/dataAccess';
 
 @Component({
   templateUrl: './todo.component.html',
@@ -21,7 +22,19 @@ export class TodoComponent implements OnInit {
     @Inject('todoService') private service,
     private route: ActivatedRoute,
     private router: Router,
-  ) {}
+    private dataAccess: DataAccess,
+  ) {
+    this.dataAccess.set('name', this.time);
+  }
+
+  time() {
+    console.log('start');
+    return new Promise(res=> {
+      setTimeout(()=>{
+        res(1)
+      },5000)
+    });
+  }
 
   ngOnInit() {
     this.route.params.forEach((params: Params) => {

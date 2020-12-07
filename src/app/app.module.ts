@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { AuthService } from './core/auth.service';
 import { InMemoryTodoDbService } from './todo/ut/todo-data';
 import { Http } from './util/fakeHttp';
+import { DataAccess } from './util/dataAccess';
 
 // 组件/页面
 import { LoginComponent } from './login/login.component';
@@ -37,6 +38,7 @@ Http.forRoot([InMemoryTodoDbService]);
     {provide: 'auth', useClass: AuthService},
     HttpClientModule,
     Http,
+    DataAccess,
   ],
   bootstrap: [AppComponent]
 })

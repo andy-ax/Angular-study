@@ -3,11 +3,12 @@ import {Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Todo} from '../../domain/entities';
 import { Http } from '../../util/fakeHttp';
+import {DataAccess} from '../../util/dataAccess';
 
 
 @Injectable()
 
-export class TodoService {
+export class TodoService{
 
   todos: Todo [] = [];
   userId: number;
@@ -15,7 +16,18 @@ export class TodoService {
   private todo_url = 'todos';
   private headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private dataAccess: DataAccess) {
+    setTimeout(()=>{
+      this.getTime();
+    }, 0)
+  }
+
+  getTime() {
+    const pro = this.dataAccess.get('name');
+    pro.then(value=>{
+      console.log(this.api_url);
+      console.log(value);
+    })
   }
 
   // PUT todos/:id
