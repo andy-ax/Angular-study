@@ -1,4 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+import {Auth} from '../domain/entities';
 
 // Component 是ng提供的装饰器函数 用来描述Component的元数据 是组件的装饰器
 @Component({
@@ -19,6 +22,7 @@ import { Component, OnInit, Inject } from '@angular/core';
           <div *ngIf="usernameRef.errors">{{usernameRef.errors | json }}</div>
           <div *ngIf="usernameRef.errors?.required">this is required</div>
           <div *ngIf="usernameRef.errors?.minlegth">should be at least 3 charactors</div>
+          <div *ngIf="auth?.hasError">{{auth.errMsg}}</div>
           <input type="password"
             name="password"
             [(ngModel)]="password"
@@ -38,15 +42,27 @@ export class LoginComponent implements OnInit {
   text: String = 'Hello LoginComponent';
   public username = '';
   public password = '';
+  auth: Auth;
 
-  constructor(@Inject('auth') private service) { }
+  constructor(@Inject('auth') private service, private router: Router) { }
 
   ngOnInit() {
   }
 
-  private onSubmit (formValue: object): void {
-    console.log(formValue);
-    console.log(`auth result is: ${this.service.loginWithCredentials(this.username, this.password)}`);
+  private onSubmit (formValue): void {
+    this.service.
+    loginWithCredentials(formValue.login.username, formValue.login.password).
+    then(auth => {
+      let redirectUrl = auth.redirectUrl;
+      if (redirectUrl === null) redirectUrl = '/';
+
+      if (!auth.hasError) {
+        this.router.navigate([redirectUrl]);
+        localStorage.removeItem('redirectUrl');
+      } else {
+        this.auth = Object.assign({}, auth);
+      }
+    })
   }
 
 }
