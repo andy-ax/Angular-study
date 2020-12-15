@@ -24,7 +24,7 @@ export class TodoListComponent implements OnInit {
 
   constructor() { }
 
-  onRemoveTrigggered(todo: Todo) {
+  onRemoveTriggered(todo: Todo) {
     this.onRemoveTodo.emit(todo);
   }
 

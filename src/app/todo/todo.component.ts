@@ -4,7 +4,6 @@ import { Todo } from '../domain/entities';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Inject } from '@angular/core';
 import {UUID} from 'uuid'
-import {DataAccess} from '../util/dataAccess';
 
 @Component({
   templateUrl: './todo.component.html',
@@ -22,18 +21,8 @@ export class TodoComponent implements OnInit {
     @Inject('todoService') private service,
     private route: ActivatedRoute,
     private router: Router,
-    private dataAccess: DataAccess,
   ) {
-    this.dataAccess.set('name', this.time);
-  }
-
-  time() {
-    console.log('start');
-    return new Promise(res=> {
-      setTimeout(()=>{
-        res(1)
-      },5000)
-    });
+    this.userId = parseInt(localStorage.getItem('userId'));
   }
 
   ngOnInit() {
@@ -55,7 +44,7 @@ export class TodoComponent implements OnInit {
       completed: false,
       userId: this.userId
     };
-    this.service.addTodo(todo).then(data=>{
+    this.service.addTodo(todo, this.userId).then(data=>{
       if (data) {
         this.todos = data;
       }
@@ -66,14 +55,14 @@ export class TodoComponent implements OnInit {
   toggleTodo(todo: Todo) {
     const i = this.todos.indexOf(todo);
     todo.completed = !todo.completed;
-    this.service.toggleTodo(todo).then(data=>{
+    this.service.toggleTodo(todo, this.userId).then(data=>{
       this.todos = data;
     })
   }
 
   removeTodo(todo: Todo) {
     const i = this.todos.indexOf(todo);
-    this.service.deleteTodoById(todo.id).then(data=>{
+    this.service.deleteTodoById(todo.id, this.userId).then(data=>{
       this.todos = data;
     })
   }

@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
       if (redirectUrl === null) redirectUrl = '/';
 
       if (!auth.hasError) {
-        this.router.navigate([redirectUrl]);
+        location.href = redirectUrl;
         localStorage.removeItem('redirectUrl');
       } else {
         this.auth = Object.assign({}, auth);

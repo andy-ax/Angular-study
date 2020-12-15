@@ -1,9 +1,10 @@
-import {Http} from '../../util/fakeHttp';
-import {Todo} from '../../domain/entities';
-import * as value from  '../../data.json';
+import {Http} from './fakeHttp';
+import {Todo, User} from '../domain/entities';
+import * as value from '../data.json';
 
 export class InMemoryTodoDbService extends Http{
   private todos: Todo[] = (<any>value).todos;
+  private users: User[] = (<any>value).users;
 
   constructor(){
     super();
@@ -15,12 +16,13 @@ export class InMemoryTodoDbService extends Http{
     super.setRoute('api/todos/:id', 'delete', this.deleteTodo.bind(this));
     super.setRoute('api/todos/ACTIVE', 'get', this.getActive.bind(this));
     super.setRoute('api/todos/COMPLETED', 'get', this.getCompleted.bind(this));
+    super.setRoute('api/users', 'get', this.getUser.bind(this));
   }
 
   getTodo(data: undefined, query) {
     return new Promise((res) => {
       const id = query.userId;
-      const result = this.todos.filter(x=>x.userId === id);
+      const result = this.getTodoByUserId(id);
       res(result);
     });
   }
@@ -41,26 +43,30 @@ export class InMemoryTodoDbService extends Http{
 
   toggleTodo(data: Todo, query, id: number|string) {
     return new Promise((res)=>{
-      const item = this.todos.find(item=>item.id == id);
-      item.desc = data.desc;
-      item.completed = data.completed;
-      res(this.todos);
+      const item = this.todos.find(item => item.id == id && item.userId == query.userId);
+      if (item) {
+        item.desc = data.desc;
+        item.completed = data.completed;
+      }
+      res(this.getTodoByUserId(query.userId));
     })
   }
 
   deleteTodo(data: undefined, query, id: number|string) {
     return new Promise((res)=>{
-      const index = this.todos.findIndex(item=>item.id == id);
-      const todos = this.todos;
-      this.todos = todos.slice(0, index).concat(todos.slice(index+1));
-      res(this.todos);
+      const index = this.todos.findIndex(item=>item.id == id && item.userId == query.userId);
+      if (index || index === 0) {
+        const todos = this.todos;
+        this.todos = todos.slice(0, index).concat(todos.slice(index+1));
+      }
+      res(this.getTodoByUserId(query.userId));
     })
   }
 
   getActive(data: undefined, query){
     return new Promise(res=>{
       const id = query.userId;
-      const result = this.todos.filter(x=>(x.userId === id && x.completed === false));
+      const result = this.todos.filter(x=>(x.userId == id && x.completed === false));
       res(result);
     })
   }
@@ -68,8 +74,19 @@ export class InMemoryTodoDbService extends Http{
   getCompleted(todos: Todo[], query){
     return new Promise(res=>{
       const id = query.userId;
-      const result = this.todos.filter(x=>(x.userId === id && x.completed === true));
+      const result = this.todos.filter(x=>(x.userId == id && x.completed === true));
       res(result);
     })
+  }
+
+  getUser(data, query) {
+    return new Promise(res => {
+      const user = this.users.find(x => x.username === query.username);
+      res([user]);
+    })
+  }
+
+  private getTodoByUserId(id) {
+    return this.todos.filter(x=>x.userId == id)
   }
 }

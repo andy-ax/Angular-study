@@ -86,7 +86,7 @@ export class Http {
     let result: any = {
       url: base,
     };
-    if (query.length > 0) {
+    if (query && query.length > 0) {
       const queryArr = query.split('&');
       const queryObj: any = {};
       queryArr.forEach(item=>{

@@ -8,7 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { routing } from './app.routes';
 import { AppComponent } from './app.component';
 import { AuthService } from './core/auth.service';
-import { InMemoryTodoDbService } from './todo/ut/todo-data';
+import { AuthGuardService } from './core/auth-guard.service';
+import { UserService } from './core/user.service';
+import { InMemoryTodoDbService } from './util/base.server';
 import { Http } from './util/fakeHttp';
 import { DataAccess } from './util/dataAccess';
 
@@ -36,6 +38,8 @@ Http.forRoot([InMemoryTodoDbService]);
   ],
   providers: [
     {provide: 'auth', useClass: AuthService},
+    {provide: 'user', useClass: UserService},
+    AuthGuardService,
     HttpClientModule,
     Http,
     DataAccess,

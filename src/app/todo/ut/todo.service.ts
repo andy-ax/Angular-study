@@ -3,7 +3,6 @@ import {Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Todo} from '../../domain/entities';
 import { Http } from '../../util/fakeHttp';
-import {DataAccess} from '../../util/dataAccess';
 
 
 @Injectable()
@@ -16,28 +15,17 @@ export class TodoService{
   private todo_url = 'todos';
   private headers = new Headers({'Content-Type': 'application/json'});
 
-  constructor(private http: Http, private dataAccess: DataAccess) {
-    setTimeout(()=>{
-      this.getTime();
-    }, 0)
-  }
-
-  getTime() {
-    const pro = this.dataAccess.get('name');
-    pro.then(value=>{
-      console.log(this.api_url);
-      console.log(value);
-    })
-  }
+  constructor(private http: Http) { }
 
   // PUT todos/:id
-  toggleTodo(todo: Todo){
-    const url = `${this.api_url}${this.todo_url}/${todo.id}`;
+  toggleTodo(todo: Todo, userId: number){
+    const url = `${this.api_url}${this.todo_url}/${todo.id}?userId=${userId}`;
     return this.http.put(url, todo);
   }
 
   // GET todos
   filterTodos(filter: string, userId: number): Promise<any> {
+
     switch (filter) {
       case 'ACTIVE':
         return this.http.get(`${this.api_url+this.todo_url}/ACTIVE?userId=${userId}`);
@@ -49,13 +37,13 @@ export class TodoService{
   }
 
   // POST todos
-  addTodo(todoItem) {
-    return this.http.post(this.api_url+this.todo_url,todoItem)
+  addTodo(todoItem, userId: number) {
+    return this.http.post(`${this.api_url+this.todo_url}?userId=${userId}`,todoItem)
   }
 
   // DELETE todos/:id
-  deleteTodoById(id: number) {
-    const url = `${this.api_url}${this.todo_url}/${id}`;
+  deleteTodoById(id: number, userId: number) {
+    const url = `${this.api_url}${this.todo_url}/${id}?userId=${userId}`;
     return this.http.delete(url);
   }
 
