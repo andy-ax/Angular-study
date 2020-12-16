@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 // 模块
-import { routing } from './app.routes';
+// import { routing } from './app.routes';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './core/auth.service';
 import { AuthGuardService } from './core/auth-guard.service';
@@ -33,7 +34,8 @@ Http.forRoot([InMemoryTodoDbService]);
     // HTTP请求与响应
     HttpClientModule,
     // 路由
-    routing,
+    // routing,
+    AppRoutingModule,
     TodoModule
   ],
   providers: [
